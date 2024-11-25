@@ -2,6 +2,7 @@ from collections import defaultdict
 from math import ceil
 import json
 from sklearn.cluster import SpectralClustering
+import os
 
 from .Preprocessor import preprocessor
 from .VectorEmbedding import vectorizer
