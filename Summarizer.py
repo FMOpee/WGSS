@@ -34,11 +34,13 @@ def get_bengali_stop_words():
     return stop_words
 
 
-def get_curated_summarization_dataset():
-    return json.load(open("self_curated_dataset.json", "r", encoding="utf8"))
+def get_curated_bengali_summarization_dataset():
+    # Use pkg_resources to get the path to stopwords_bn.txt
+    dataset_path = pkg_resources.resource_filename(__name__, "self_curated_dataset.json")
+    return json.load(open(dataset_path, "r", encoding="utf8"))
 
 
-def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
+def get_bengali_summary(input_document, sigma=5e-11, proportion=0.2):
     # pre_processing
     print("1. preprocessing")
     sentences, word_arrays = preprocessing(input_document)
