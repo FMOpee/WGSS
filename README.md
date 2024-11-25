@@ -56,6 +56,7 @@ The output is a list of dictionary objects. `[ {"document":"....", "summary-1":"
 WGSS.vectorize(list_of_words_in_a_sentence)
 ```
 The input is a list of words in a sentence and the output is a list of word embedding vectors obtained from fasttext.
+
 *Note: First run takes about 30 minute to download and load the vector space* 
 ```python
 WGSS.sentence_similarity(sentence_i, sentence_j, sigma=5e-11)
@@ -65,4 +66,5 @@ The input is two sets of vectors gotten from the vectorize section and a control
 WGSS.get_bengali_summary(input_document, sigma=5e-11, proportion=0.2)
 ```
 The input takes a string to summarize. optional inputs include sigma, the control variable for sentence similarity calculation, and proportion, the size of the expected summary compared to the input document.
+
 *Note: First run takes about 30 minute to download and load the vector space*
