@@ -3,10 +3,10 @@ from math import ceil
 import json
 from sklearn.cluster import SpectralClustering
 
-from Preprocessor import preprocessor
-from VectorEmbedding import vectorizer
-from WGSS import sentence_similarity as sentence_similarity_calculator
-from TFIDF import rank_using_tfidf
+from .Preprocessor import preprocessor
+from .VectorEmbedding import vectorizer
+from .WGSS import sentence_similarity as sentence_similarity_calculator
+from .TFIDF import rank_using_tfidf
 
 
 def preprocessing(input_document):
