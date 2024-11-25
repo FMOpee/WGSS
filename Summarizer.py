@@ -86,7 +86,7 @@ def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
     for cluster in set_of_clusters.items():
         sentence_in_this_cluster = []
         for sentence_index in cluster[1]:
-            sentence_in_this_cluster.append(sentences[sentence_index])
+            sentence_in_this_cluster.append((sentence_index, sentences[sentence_index]))
         if len(sentence_in_this_cluster) > 1:
             picked_index = rank_using_tfidf(sentence_in_this_cluster)
         else:

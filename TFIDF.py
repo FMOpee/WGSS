@@ -1,8 +1,8 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-def rank_using_tfidf(sentence_cluster):
-    sentences = [s for _, s in sentence_cluster]
+def rank_using_tfidf(index_and_sentences_in_cluster)):
+    sentences = [s for _, s in index_and_sentences_in_cluster]
     tfidf_vectorizer = TfidfVectorizer()
     try:
         # Fit the vectorizer to the Bengali sentences
@@ -16,7 +16,7 @@ def rank_using_tfidf(sentence_cluster):
 
     for i in range(len(sentences)):
         feature_index = tfidf_matrix[i, :].nonzero()[1]
-        original_index, _ = sentence_cluster[i]
+        original_index, _ = index_and_sentences_in_cluster[i]
         tfidf_scores[original_index] = {feature_names[index]: tfidf_matrix[i, index] for index in feature_index}
 
     # Sort sentences based on their average TF-IDF scores
