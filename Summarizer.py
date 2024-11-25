@@ -3,6 +3,7 @@ from math import ceil
 import json
 from sklearn.cluster import SpectralClustering
 import os
+import pkg_resources
 
 from .Preprocessor import preprocessor
 from .VectorEmbedding import vectorizer
@@ -23,9 +24,8 @@ def sentence_similarity(vector_array_1, vector_array_2, sigma=5e-11):
 
 
 def get_bengali_stop_words():
-    current_dir = os.path.dirname(__file__)
-    # Construct the absolute path to the stopwords file
-    stopwords_path = os.path.join(current_dir, "stopwords_bn.txt")
+    # Use pkg_resources to get the path to stopwords_bn.txt
+    stopwords_path = pkg_resources.resource_filename(__name__, "stopwords_bn.txt")
     # Read the stopwords
     with open(stopwords_path, "r", encoding="utf8") as f:
         stop_words = f.readlines()
