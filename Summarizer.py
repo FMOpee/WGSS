@@ -5,7 +5,7 @@ from sklearn.cluster import SpectralClustering
 
 from Preprocessor import preprocessor
 from VectorEmbedding import vectorizer
-from WGSS import sentence_similarity
+from WGSS import sentence_similarity as sentence_similarity_calculator
 from TFIDF import rank_using_tfidf
 
 
@@ -17,8 +17,8 @@ def vectorize(word_array):
     return vectorizer(word_array)
 
 
-def similarity(vector_array_1, vector_array_2, sigma=5e-11):
-    return sentence_similarity(vector_array_1, vector_array_2, sigma)
+def sentence_similarity(vector_array_1, vector_array_2, sigma=5e-11):
+    return sentence_similarity_calculator(vector_array_1, vector_array_2, sigma)
 
 
 def get_bengali_stop_words():
@@ -31,7 +31,7 @@ def get_curated_summarization_dataset():
     return json.load(open("self_curated_dataset.json", "r", encoding="utf8"))
 
 
-def get_summary(input_document, sigma=5e-11, proportion=0.2):
+def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
     # pre_processing
     sentences, word_arrays = preprocessing(input_document)
 
@@ -50,7 +50,7 @@ def get_summary(input_document, sigma=5e-11, proportion=0.2):
     # sentence similarity calculation
     for i in range(total_sentences):
         for j in range(i + 1, total_sentences):
-            affinity_matrix[i][j] = similarity(set_of_vectors[i], set_of_vectors[j], sigma)
+            affinity_matrix[i][j] = sentence_similarity(set_of_vectors[i], set_of_vectors[j], sigma)
             affinity_matrix[j][i] = affinity_matrix[i][j]
 
     # setting number of clusters

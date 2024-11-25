@@ -1,5 +1,4 @@
 nltk~=3.9.1
 numpy~=1.26.4
-gensim~=4.3.3
 fasttext
 scikit-learn~=1.5.2
