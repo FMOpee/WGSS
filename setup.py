@@ -13,8 +13,8 @@ setup(
         'fasttext',
         'scikit-learn',
         # 'collections',
-        'math',
-        'json',
-        'os'
+        # 'math',
+        # 'json',
+        # 'os'
     ]
 )
