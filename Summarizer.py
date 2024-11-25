@@ -22,7 +22,7 @@ def sentence_similarity(vector_array_1, vector_array_2, sigma=5e-11):
 
 
 def get_bengali_stop_words():
-    stop_words = open("/content/WGSS//stopwords_bn.txt", "r", encoding="utf8").readlines()
+    stop_words = open("/content/WGSS/stopwords_bn.txt", "r", encoding="utf8").readlines()
     stop_words = [stop_word.split('\n')[0] for stop_word in stop_words]
     return stop_words
 
