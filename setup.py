@@ -12,7 +12,7 @@ setup(
         'numpy',
         'fasttext',
         'scikit-learn',
-        'collections',
+        # 'collections',
         'math',
         'json',
         'os'
