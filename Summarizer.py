@@ -22,8 +22,14 @@ def sentence_similarity(vector_array_1, vector_array_2, sigma=5e-11):
 
 
 def get_bengali_stop_words():
-    stop_words = open("stopwords_bn.txt", "r", encoding="utf8").readlines()
-    stop_words = [stop_word.split('\n')[0] for stop_word in stop_words]
+    current_dir = os.path.dirname(__file__)
+    # Construct the absolute path to the stopwords file
+    stopwords_path = os.path.join(current_dir, "stopwords_bn.txt")
+    # Read the stopwords
+    with open(stopwords_path, "r", encoding="utf8") as f:
+        stop_words = f.readlines()
+    # Process and return the stopwords
+    stop_words = [stop_word.strip() for stop_word in stop_words]
     return stop_words
 
 
