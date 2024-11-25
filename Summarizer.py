@@ -40,9 +40,11 @@ def get_curated_summarization_dataset():
 
 def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
     # pre_processing
+    print("1. preprocessing")
     sentences, word_arrays = preprocessing(input_document)
 
     # word embedding
+    print("2. word embedding")
     set_of_vectors = []
     for word_array in word_arrays:
         set_of_vectors.append(vectorize(word_array))
@@ -55,6 +57,7 @@ def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
         affinity_matrix.append(row)  # initiating matrix with zeroes
 
     # sentence similarity calculation
+    print("3. Sentence similarity calculation")
     for i in range(total_sentences):
         for j in range(i + 1, total_sentences):
             affinity_matrix[i][j] = sentence_similarity(set_of_vectors[i], set_of_vectors[j], sigma)
@@ -65,6 +68,7 @@ def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
                      ceil(total_sentences * proportion))
 
     # clustering
+    print("4. clustering")
     if len(affinity_matrix) > 1:
         model = SpectralClustering(n_clusters=n_clusters, affinity='precomputed')
         model.fit(affinity_matrix)
@@ -77,6 +81,7 @@ def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
         set_of_clusters = {"1": [0]}
 
     # picking the best sentence from each cluster
+    print("5. TFIDF ranking")
     indices_in_summary = []
     for cluster in set_of_clusters.items():
         sentence_in_this_cluster = []
@@ -89,6 +94,7 @@ def get_Bengali_summary(input_document, sigma=5e-11, proportion=0.2):
         indices_in_summary.append(picked_index)
 
     # sorting indices in their order of appearance
+    print("6. summary generation")
     for i in range(len(indices_in_summary)):
         for j in range(i + 1, len(indices_in_summary)):
             if indices_in_summary[i] > indices_in_summary[j]:
