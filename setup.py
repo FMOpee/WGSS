@@ -11,10 +11,6 @@ setup(
         'nltk',
         'numpy',
         'fasttext',
-        'scikit-learn',
-        # 'collections',
-        # 'math',
-        # 'json',
-        # 'os'
+        'scikit-learn'
     ]
 )

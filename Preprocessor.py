@@ -1,5 +1,6 @@
 import re
 from nltk.tokenize import RegexpTokenizer
+import pkg_resources
 
 
 def __custom_tokenizer(text, dividers):
@@ -18,8 +19,13 @@ def __custom_tokenizer(text, dividers):
 
 
 def __stopword_removal(sentences):
-    stop_words = open("stopwords_bn.txt", "r", encoding="utf8").readlines()
-    stop_words = [stop_word.split('\n')[0] for stop_word in stop_words]
+    # Use pkg_resources to get the path to stopwords_bn.txt
+    stopwords_path = pkg_resources.resource_filename(__name__, "stopwords_bn.txt")
+    # Read the stopwords
+    with open(stopwords_path, "r", encoding="utf8") as f:
+        stop_words = f.readlines()
+    # Process and return the stopwords
+    stop_words = [stop_word.strip() for stop_word in stop_words]
 
     preprocessed_word_list = []
     for sentence in sentences:
