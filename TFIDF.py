@@ -1,7 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-def rank_using_tfidf(index_and_sentences_in_cluster)):
+def rank_using_tfidf(index_and_sentences_in_cluster):
     sentences = [s for _, s in index_and_sentences_in_cluster]
     tfidf_vectorizer = TfidfVectorizer()
     try:
