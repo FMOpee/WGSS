@@ -1,11 +1,19 @@
 # Word-pair-based Gaussian Sentence Similarity
 
-This repository is a documentation of the paper "A Novel Word Pair-based Gaussian Sentence Similarity Algorithm For Bengali Extractive Text Summarization".
+This repository is a documentation of the paper "[A Novel Word Pair-based Gaussian Sentence Similarity Algorithm For Bengali Extractive Text Summarization](https://doi.org/10.48550/arXiv.2411.17181)".
 
 ## citation
 
 ```
-
+@misc{morshed-etal-2024-WGSS,
+      title={A Novel Word Pair-based Gaussian Sentence Similarity Algorithm For Bengali Extractive Text Summarization}, 
+      author={Fahim Morshed and Md. Abdur Rahman and Sumon Ahmed},
+      year={2024},
+      eprint={2411.17181},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2411.17181}, 
+}
 ```
 
 ## Functionality
