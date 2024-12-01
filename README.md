@@ -29,7 +29,7 @@ This package includes the following functionality:
 ## Installation
 
 In colab/jupyter use this to install or import the package
-```jupyter
+```python
 !git clone https://www.github.com/FMOpee/WGSS.git
 !pip install WGSS/
 import WGSS
