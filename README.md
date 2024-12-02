@@ -5,14 +5,11 @@ This repository is a documentation of the paper "[A Novel Word Pair-based Gaussi
 ## citation
 
 ```
-@misc{morshed-etal-2024-WGSS,
-      title={A Novel Word Pair-based Gaussian Sentence Similarity Algorithm For Bengali Extractive Text Summarization}, 
-      author={Fahim Morshed and Md. Abdur Rahman and Sumon Ahmed},
-      year={2024},
-      eprint={2411.17181},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2411.17181}, 
+@article{morshed-2024-wgss,
+  title={A Novel Word Pair-based Gaussian Sentence Similarity Algorithm For Bengali Extractive Text Summarization},
+  author={Morshed, Fahim and Rahman, Md Abdur and Ahmed, Sumon},
+  journal={arXiv preprint arXiv:2411.17181},
+  year={2024}
 }
 ```
 
