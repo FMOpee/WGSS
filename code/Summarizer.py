@@ -31,7 +31,7 @@ def rank_using_tfidf(index_and_sentences_in_cluster):
     return sorted_sentences[0][0]
 
 
-def get_summary(input_text, sigma=5e-11, proportion=0.2):
+def get_summary(input_text, sigma=0.70710678, proportion=0.15):
     sentence_dividers = ['।', '|', '!', '?', ":", '.', ';']
     divider_pattern = '|'.join(map(re.escape, sentence_dividers))
     tokenizer = RegexpTokenizer(f'[^{divider_pattern}]+|[{divider_pattern}]')
