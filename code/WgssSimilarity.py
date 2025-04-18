@@ -47,7 +47,7 @@ def __euclidean_distance(vect1, vect2):
     return numpy.linalg.norm(vect1 - vect2)
 
 
-def wgss(sentence1, sentence2, sigma=5e-11):
+def wgss(sentence1, sentence2, sigma=0.70710678):
     word_set_1 = __vectorizer(sentence1)
     word_set_2 = __vectorizer(sentence2)
 
