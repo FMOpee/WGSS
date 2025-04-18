@@ -1,76 +1,65 @@
+from .WgssSimilarity import wgss
+import re
+from nltk.tokenize import RegexpTokenizer
 from collections import defaultdict
 from math import ceil
-import json
 from sklearn.cluster import SpectralClustering
-import os
-import pkg_resources
-
-from .Preprocessor import preprocessor
-from .VectorEmbedding import vectorizer
-from .WGSS import sentence_similarity as sentence_similarity_calculator
-from .TFIDF import rank_using_tfidf
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-def preprocessing(input_document):
-    return preprocessor(input_document)
+def rank_using_tfidf(index_and_sentences_in_cluster):
+    sentences = [s for _, s in index_and_sentences_in_cluster]
+    tfidf_vectorizer = TfidfVectorizer()
+    try:
+        # Fit the vectorizer to the Bengali sentences
+        tfidf_matrix = tfidf_vectorizer.fit_transform(sentences)
+    except ValueError:
+        return 0
+    # Get feature names
+    feature_names = tfidf_vectorizer.get_feature_names_out()
+    # Create a dictionary to store the TF-IDF scores for each word in each sentence
+    tfidf_scores = {}
+
+    for i in range(len(sentences)):
+        feature_index = tfidf_matrix[i, :].nonzero()[1]
+        original_index, _ = index_and_sentences_in_cluster[i]
+        tfidf_scores[original_index] = {feature_names[index]: tfidf_matrix[i, index] for index in feature_index}
+
+    # Sort sentences based on their average TF-IDF scores
+    sorted_sentences = sorted(tfidf_scores.items(), key=lambda x: sum(x[1].values()), reverse=True)
+
+    return sorted_sentences[0][0]
 
 
-def vectorize(word_array):
-    return vectorizer(word_array)
+def get_summary(input_text, sigma=5e-11, proportion=0.2):
+    sentence_dividers = ['।', '|', '!', '?', ":", '.', ';']
+    divider_pattern = '|'.join(map(re.escape, sentence_dividers))
+    tokenizer = RegexpTokenizer(f'[^{divider_pattern}]+|[{divider_pattern}]')
+    tokens = tokenizer.tokenize(input_text)
 
-
-def sentence_similarity(vector_array_1, vector_array_2, sigma=5e-11):
-    return sentence_similarity_calculator(vector_array_1, vector_array_2, sigma)
-
-
-def get_bengali_stop_words():
-    # Use pkg_resources to get the path to stopwords_bn.txt
-    stopwords_path = pkg_resources.resource_filename(__name__, "stopwords_bn.txt")
-    # Read the stopwords
-    with open(stopwords_path, "r", encoding="utf8") as f:
-        stop_words = f.readlines()
-    # Process and return the stopwords
-    stop_words = [stop_word.strip() for stop_word in stop_words]
-    return stop_words
-
-
-def get_curated_bengali_summarization_dataset():
-    # Use pkg_resources to get the path to stopwords_bn.txt
-    dataset_path = pkg_resources.resource_filename(__name__, "self_curated_dataset.json")
-    return json.load(open(dataset_path, "r", encoding="utf8"))
-
-
-def get_bengali_summary(input_document, sigma=5e-11, proportion=0.2):
-    # pre_processing
-    print("1. preprocessing")
-    sentences, word_arrays = preprocessing(input_document)
-
-    # word embedding
-    print("2. word embedding")
-    set_of_vectors = []
-    for word_array in word_arrays:
-        set_of_vectors.append(vectorize(word_array))
-
+    sentences = []
+    for token in tokens:
+        if token.strip() and token not in sentence_dividers:
+            sentences.append(token.strip())
+    
     # initiating affinity matrix
     affinity_matrix = []
-    total_sentences = len(set_of_vectors)
+    total_sentences = len(sentences)
     for i in range(total_sentences):
         row = [0] * total_sentences
         affinity_matrix.append(row)  # initiating matrix with zeroes
-
+    
     # sentence similarity calculation
-    print("3. Sentence similarity calculation")
     for i in range(total_sentences):
         for j in range(i + 1, total_sentences):
-            affinity_matrix[i][j] = sentence_similarity(set_of_vectors[i], set_of_vectors[j], sigma)
+            affinity_matrix[i][j] = wgss(sentences[i], sentences[j], sigma)
             affinity_matrix[j][i] = affinity_matrix[i][j]
-
+    
     # setting number of clusters
     n_clusters = max(min(2, total_sentences),
                      ceil(total_sentences * proportion))
-
+    
     # clustering
-    print("4. clustering")
     if len(affinity_matrix) > 1:
         model = SpectralClustering(n_clusters=n_clusters, affinity='precomputed')
         model.fit(affinity_matrix)
@@ -83,7 +72,6 @@ def get_bengali_summary(input_document, sigma=5e-11, proportion=0.2):
         set_of_clusters = {"1": [0]}
 
     # picking the best sentence from each cluster
-    print("5. TFIDF ranking")
     indices_in_summary = []
     for cluster in set_of_clusters.items():
         sentence_in_this_cluster = []
@@ -96,7 +84,6 @@ def get_bengali_summary(input_document, sigma=5e-11, proportion=0.2):
         indices_in_summary.append(picked_index)
 
     # sorting indices in their order of appearance
-    print("6. summary generation")
     for i in range(len(indices_in_summary)):
         for j in range(i + 1, len(indices_in_summary)):
             if indices_in_summary[i] > indices_in_summary[j]:
